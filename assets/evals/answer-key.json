@@ -1,0 +1,24 @@
+{
+  "defects": [
+    {
+      "id": "D1",
+      "kind": "open question left in a frozen spec",
+      "location_hint": "Open questions section: the tags field question is still pending although the status line says frozen."
+    },
+    {
+      "id": "D2",
+      "kind": "missing error case",
+      "location_hint": "Requirements: no row covers a source path that exists but is not a folder, or a file that cannot be read or decoded as UTF-8."
+    },
+    {
+      "id": "D3",
+      "kind": "private helper named in the interface",
+      "location_hint": "Expected interface table: the row for _normalize_title, a name that starts with an underscore, plus its behavior line below the table."
+    },
+    {
+      "id": "D4",
+      "kind": "undefined term",
+      "location_hint": "Requirement 11: 'staging ledger' and the notion of a draft note are used but defined nowhere in the spec."
+    }
+  ]
+}

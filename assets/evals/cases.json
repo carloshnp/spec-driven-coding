@@ -1,0 +1,158 @@
+{
+  "cases": [
+    {
+      "id": "cli-tool",
+      "project": "CLI tool",
+      "prompt": "Build a command line tool `notes export` that bundles a folder of Markdown notes into one JSON file, with error handling for bad paths and an overwrite flag. Multiple modules and tests are expected.",
+      "assertions": [
+        "A spec file exists and was approved by the user in a later turn before planning",
+        "Every acceptance criterion has a False if clause",
+        "Tests import public names only",
+        "The final report quotes command output and names the VERIFY file"
+      ],
+      "expected_gates": [
+        "0 scope",
+        "1 specify",
+        "2 plan and tasks",
+        "3 increments",
+        "4 verify"
+      ],
+      "expected_artifacts": [
+        "spec.md",
+        "plan.md",
+        "task files",
+        "STATE.md",
+        "VERIFY.md"
+      ]
+    },
+    {
+      "id": "rest-endpoint",
+      "project": "REST endpoint",
+      "prompt": "Add a paginated orders list endpoint (GET) to our existing service with filtering by status, an error model shared with the other endpoints, and tests.",
+      "assertions": [
+        "Existing error model is reused and not replaced",
+        "Unhappy paths (bad page, unknown status) have criteria",
+        "The interface entry for the endpoint states Input and Output as protocol shape",
+        "No existing endpoint behavior changes"
+      ],
+      "expected_gates": [
+        "0 scope",
+        "1 specify",
+        "2 plan and tasks",
+        "3 increments",
+        "4 verify"
+      ],
+      "expected_artifacts": [
+        "spec.md",
+        "task files",
+        "VERIFY.md"
+      ]
+    },
+    {
+      "id": "data-script",
+      "project": "Data script",
+      "prompt": "Write a script that reads three monthly sales CSV files, merges them, removes duplicate orders, and writes a summary report plus a cleaned file. Include checks for malformed rows.",
+      "assertions": [
+        "Criteria cover malformed rows and duplicate handling",
+        "Expected output is checked by a test on sample data",
+        "Scope gate records why the full gate set applies or is trimmed",
+        "Verification evidence is a command transcript"
+      ],
+      "expected_gates": [
+        "0 scope",
+        "1 specify",
+        "3 increments",
+        "4 verify"
+      ],
+      "expected_artifacts": [
+        "spec.md",
+        "VERIFY.md"
+      ]
+    },
+    {
+      "id": "ui-component",
+      "project": "UI component",
+      "prompt": "Create a reusable date range picker component with keyboard support, a disabled-dates option, and an accessible label, plus tests and a usage example.",
+      "assertions": [
+        "Criteria state observable signals for keyboard and disabled dates",
+        "Validation method per criterion names tests or a computer-use check when available",
+        "Tasks are tracer-bullet slices, not layer-by-layer",
+        "Wave size does not exceed 3"
+      ],
+      "expected_gates": [
+        "0 scope",
+        "1 specify",
+        "2 plan and tasks",
+        "3 increments",
+        "4 verify"
+      ],
+      "expected_artifacts": [
+        "spec.md",
+        "plan.md",
+        "task files",
+        "VERIFY.md"
+      ]
+    },
+    {
+      "id": "negative-control-one-line-fix",
+      "project": "Bug fix",
+      "prompt": "In config.py the default timeout is 30 but the docs say 60. Change the default to 60.",
+      "assertions": [
+        "No spec, plan, or task files are created",
+        "The change touches only the one line",
+        "The agent runs a command to confirm the new value and quotes the output"
+      ],
+      "expected_gates": [
+        "increment loop only"
+      ],
+      "expected_artifacts": []
+    },
+    {
+      "id": "wide-rename",
+      "project": "Wide rename",
+      "prompt": "Rename the concept 'account' to 'workspace' across the codebase: about 140 files, API field names, database columns, docs, and tests. Existing clients must keep working during the change.",
+      "assertions": [
+        "Plan uses expand, then migrate in batches, then contract",
+        "Each migrate batch fits one context window",
+        "The contract task is blocked by every migrate batch",
+        "The wide-change plan is marked as unverified in the sources it relies on",
+        "Public API field names keep working during the expand phase"
+      ],
+      "expected_gates": [
+        "0 scope",
+        "1 specify",
+        "2 plan and tasks",
+        "3 increments",
+        "4 verify"
+      ],
+      "expected_artifacts": [
+        "spec.md",
+        "plan.md",
+        "task files",
+        "STATE.md",
+        "VERIFY.md"
+      ]
+    },
+    {
+      "id": "bug-fix-multi-file",
+      "project": "Bug fix (multi-file)",
+      "prompt": "Users report that the report export drops the last row when the filter is empty. The defect spans the query builder and the CSV writer. Fix it and add a regression test.",
+      "assertions": [
+        "A regression test fails before the fix and passes after it",
+        "The fix changes both the query builder and the CSV writer",
+        "No unrelated file changes",
+        "The proof shows the regression test output"
+      ],
+      "expected_gates": [
+        "0 scope",
+        "3 increments",
+        "4 verify"
+      ],
+      "expected_artifacts": [
+        "STATE.md",
+        "tasks/plan.md",
+        "VERIFY.md"
+      ]
+    }
+  ]
+}

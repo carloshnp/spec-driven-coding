@@ -1,0 +1,124 @@
+{
+  "queries": [
+    {
+      "query": "Add a CSV export feature to our inventory service: new endpoint, a background job, config, and tests. Write a spec and plan first.",
+      "should_trigger": true,
+      "kind": "positive",
+      "note": "Multi-file feature with explicit spec and plan request."
+    },
+    {
+      "query": "I need a spec with acceptance criteria and a proof of completion for a new login rate limiter that touches the API, the cache layer, and the docs.",
+      "should_trigger": true,
+      "kind": "positive",
+      "note": "Spec plus proof across several files."
+    },
+    {
+      "query": "Compile a PROMPT.md for the invoice parser project so another agent can build it from scratch.",
+      "should_trigger": true,
+      "kind": "positive",
+      "note": "Direct PROMPT.md compile request."
+    },
+    {
+      "query": "Plan and build a plugin system for our CLI: loader, registry, three sample plugins, and tests. Break it into tasks and verify each step.",
+      "should_trigger": true,
+      "kind": "positive",
+      "note": "Multi-session work needing plan and tasks."
+    },
+    {
+      "query": "Write requirements in EARS form for the notification service rewrite, then freeze them after I approve.",
+      "should_trigger": true,
+      "kind": "positive",
+      "note": "Spec writing with freeze and approval."
+    },
+    {
+      "query": "Our checkout flow needs a refactor across eleven modules. Slice it into tasks with blocking edges and run it in waves.",
+      "should_trigger": true,
+      "kind": "positive",
+      "note": "Wide change needing task slicing."
+    },
+    {
+      "query": "Turn this feature request into a frozen spec, a task list, and a VERIFY file with command output for each criterion.",
+      "should_trigger": true,
+      "kind": "positive",
+      "note": "All gate artifacts requested."
+    },
+    {
+      "query": "Build a small REST API for bookmarks with auth, pagination, and a test suite. Start by asking me what is unclear.",
+      "should_trigger": true,
+      "kind": "positive",
+      "note": "New multi-file project with clarifying rounds."
+    },
+    {
+      "query": "Check the public interface list in my PROMPT.md and make sure every test imports only public names.",
+      "should_trigger": true,
+      "kind": "positive",
+      "note": "Interface coverage on a prompt contract."
+    },
+    {
+      "query": "Resume the migration work from STATE.md: reconcile with git, then continue with the next unblocked task.",
+      "should_trigger": true,
+      "kind": "positive",
+      "note": "Resume of gated multi-session work."
+    },
+    {
+      "query": "Write a spreadsheet formula that sums column B where column A is 'paid'.",
+      "should_trigger": false,
+      "kind": "near-miss",
+      "note": "Spreadsheet formula, no coding project."
+    },
+    {
+      "query": "Write a Python ETL script that loads one CSV into a SQLite table.",
+      "should_trigger": false,
+      "kind": "near-miss",
+      "note": "Single throwaway script, no gates needed."
+    },
+    {
+      "query": "Fix this regex so it also matches uppercase letters: ^[a-z]+$",
+      "should_trigger": false,
+      "kind": "near-miss",
+      "note": "One-line regex fix."
+    },
+    {
+      "query": "Rename the function get_usr to get_user in utils.py.",
+      "should_trigger": false,
+      "kind": "near-miss",
+      "note": "Single-function rename."
+    },
+    {
+      "query": "Write a blog post about why writing specs before code helps teams.",
+      "should_trigger": false,
+      "kind": "near-miss",
+      "note": "Topic is specs, task is prose."
+    },
+    {
+      "query": "Review this one file for bugs and style problems: parser.py.",
+      "should_trigger": false,
+      "kind": "near-miss",
+      "note": "Code review of one file."
+    },
+    {
+      "query": "What is the difference between a list and a tuple in Python?",
+      "should_trigger": false,
+      "kind": "negative",
+      "note": "General question."
+    },
+    {
+      "query": "Summarize this meeting transcript in five bullets.",
+      "should_trigger": false,
+      "kind": "negative",
+      "note": "Non-coding summary."
+    },
+    {
+      "query": "Convert this JSON snippet to YAML.",
+      "should_trigger": false,
+      "kind": "negative",
+      "note": "Trivial format conversion."
+    },
+    {
+      "query": "Explain what a Docker volume is.",
+      "should_trigger": false,
+      "kind": "negative",
+      "note": "Concept explanation."
+    }
+  ]
+}
