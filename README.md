@@ -209,6 +209,6 @@ The evals are defined but have not been run against a live agent. One blind rout
 
 ## License and credits
 
-Licensed MIT, as declared in the SKILL.md frontmatter. The repository does not yet include a separate LICENSE file.
+Licensed MIT. The full text is in the `LICENSE` file, and the SKILL.md frontmatter declares the same license.
 
 `references/16-sources.md` lists the sources the ideas came from, their licenses, and what was taken from each. The text is written from scratch. Where a source had no detected license, only its ideas were used, and the wording is original.
