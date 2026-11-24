@@ -1,116 +1,109 @@
 ---
 name: spec-driven-coding
-description: Use for multi-file coding needing a spec, plan, or proof.
+description: >-
+  Milestone-driven, public-contract coding workflow using vertical TDD.
+  Use for greenfield projects or multi-file features that need an architecture
+  baseline (style, folder structure, data shapes, boundaries), explicit public
+  function contracts (mnemonic name, file path, inputs, outputs), incremental
+  milestone demos, and purposeful tests without speculative bloat. Skip for
+  one-line fixes, typos, pure Q&A, or single-file tweaks.
 license: MIT
-compatibility: Any agent harness; subagents optional.
+compatibility: Agent-agnostic (Antigravity, Hermes, Claude Code, Codex, Cursor, or any coding agent).
 metadata:
-  version: 0.1.0
-  build: "Draft build 0.1.0. Gates, references, templates and five stdlib validation scripts."
+  version: 1.0.0
 ---
 
-# Spec-driven coding
+# Spec-Driven Coding
 
-## Purpose
+Build software step by step in small, demoable milestones. Define the architecture once (only if missing), contract only the public functions for the **current** milestone, implement them with vertical TDD while keeping private helpers free, and stop after each milestone so the user can run it and steer what comes next.
 
-Make a coding run predictable. The same gates, the same artifacts, and the same order every time, so a person can review the work at fixed points and a second agent can resume it from files alone. Each gate ends in a written artifact and an exit check. Nothing moves on until the check passes.
+## When to Use — and When to Skip
 
-## When to use, and when not
+- **Use:** Greenfield projects, new modules/services, or multi-file features where clear structure, public interfaces, and incremental steering matter.
+- **Skip:** One-line bug fixes, renames, typos, formatting, or read-only explanations. For a simple bug fix, write one failing test reproducing the bug, fix it minimally, and verify.
 
-- One-line fix, rename of one function, a single regex, a typo: skip the gates. Use only the increment loop in references/06-increments.md.
-- Multi-file feature, a change that spans sessions, a task that needs a spec, a plan, or proof it works: use the gates below.
-- Unsure which class a request falls in: load references/01-scope.md and size it before writing anything.
-- Not a fit: spreadsheets, one-off data pulls with no tests, writing about specs, reviewing a single file.
+## Operating Rules
 
-## Operating rules
+1. **Inspect before proposing.** Read existing repository files, build/test commands, and conventions first. Never ask the user facts the codebase already answers.
+2. **Clarify only what blocks Milestone 1.** If the request is ambiguous, ask at most 3 concrete questions, each with a recommended default. Never silently invent major product decisions.
+3. **Contract the public boundary, free the internals.** Define public functions (mnemonic name, target file path, inputs, outputs/errors, behavior) before coding. Private functions, helpers, and internal decomposition stay out of the contract and belong to implementation.
+4. **Milestone-by-milestone, never full upfront detail.** Map the whole journey as 3–5 one-line milestones, but write detailed public function contracts **only for the active milestone**.
+5. **Strict YAGNI + Deferred Ideas valve.** Build only what the current milestone requires. Never add speculative abstractions, extra config flags, unused layers, logging frameworks, or unasked edge-case machinery. When you spot a useful edge case or future improvement, **do not code it**—record a 1-line note under `Deferred / Ideas` for the milestone review.
+6. **Verify with real commands.** Never claim done from memory. Run the actual test/typecheck/build/demo commands without pipes that mask exit codes, and report the real output. Never commit or push unless the user asks.
 
-1. Surface assumptions. Before acting on a guess, write it down as an assumption and show it to the user.
-2. Manage confusion. When the request is ambiguous, ask in rounds of at most 3 questions, each with a recommended answer. Do not pick silently.
-3. Push back on conflicts. If two requirements clash, or a request breaks an earlier decision, say so and ask which wins.
-4. Simplicity first. Build the smallest thing that meets the criteria. No speculative options, no extra layers.
-5. Scope discipline. Touch only what the current task needs. Note unrelated problems in the report; do not fix them in passing.
-6. Verify, do not assume. A completion claim needs the command output and the path of the artifact that holds it. A summary alone is not evidence.
+## The Rolling Milestone Loop
 
-The agent does not commit or push unless the user asks.
+### Step 1: Architecture Baseline & Milestone Roadmap
 
-## Gates and exit criteria
+Check whether the project already has an established architecture and stack.
 
-| Gate | Work | Exit check |
-|---|---|---|
-| 0 Scope | Size the request, pick the gates that apply (references/01-scope.md) | Class named; fits-one-window decision recorded |
-| 1 Specify | Frontier rounds, criteria, validation methods (references/02-specify.md, references/03-criteria-and-validation.md) | Frontier empty; every criterion has a False if clause and a method; spec frozen; approval line in STATE.md quoting the user, from a later turn |
-| 2 Plan and tasks | Slices and task files (references/05-plan-and-tasks.md) | Task files and plan.md written as unapproved drafts; scripts/validate_tasks.py exits 0 on the drafts; frozen only after the user approves the quiz in a later turn; approval line in STATE.md |
-| 3 Increments | Waves of at most 3 tasks (references/06-increments.md, references/10-subagents.md) | Each task has status and evidence; runnable after every task |
-| 4 Verify | Proofs, completion gate, verifier (references/11-verification.md) | scripts/validate_verification.py exits 0 on VERIFY.md |
-| 5 Compile (optional) | PROMPT.md, lint, coverage (references/04-prompt-contract.md, references/08-interfaces.md) | scripts/lint_prompt.py and scripts/check_interface_coverage.py exit 0 |
+- **Existing project:** Summarize the existing stack (language, frameworks, key libraries, test runner), folder layout, and conventions in 2–4 lines and follow them. Do not redesign working structure or install competing frameworks unless asked.
+- **No architecture yet (greenfield or new standalone subsystem):** Read [references/architecture.md](./references/architecture.md) and define:
+  1. **Architecture style / pattern** that fits best, with a 1–2 sentence rationale and dependency direction rule.
+  2. **Stack** — language/runtime, **frameworks and core libraries** (e.g., React, TanStack Router/Query, FastAPI, Pydantic, Drizzle), test runner, and build/typecheck tools. Do not install unlisted frameworks or major libraries later without asking.
+  3. **Folder structure** (exact directories and what belongs in each).
+  4. **Core data shapes** (primary types/entities needed now).
+  5. **Key boundary** (how callers enter: library exports, API routes, CLI commands, or top-level feature hooks/components).
 
-The review panel (references/12-review-panel.md) runs at gates 1 and 2 when the artifact is large.
+Then propose:
+- **Goal** (2–3 sentences).
+- **Non-Goals** (what is explicitly *not* being built yet).
+- **Milestones** (3–5 short bullets: title + 1-line demoable outcome; Milestone 1 must be the thinnest end-to-end tracer bullet).
 
-Approval is a later user turn. The agent records it in STATE.md under Approvals as `Approved by user on ISO-DATE: "the user's own words"`. The agent never writes an approval line on its own. STATE.md sits at the project root, next to specs/ and tasks/. STATE.md sections are Position, Approvals, Commands, Decisions, Open items.
+For multi-milestone or multi-session work, save this in `PLAN.md` at the project root using [references/plan-template.md](./references/plan-template.md). For small single-milestone work, present it directly in your reply.
 
-## Load table
+### Step 2: Public Functions Contract (Active Milestone Only)
 
-Load the files the current gate names; skip the rest. Each line below gives its condition.
+In the same proposal (for Milestone 1) or at the start of Milestone `k`, define **only the public entry points** introduced or changed in the active milestone—exported functions, API routes (e.g., FastAPI endpoints), CLI commands, or top-level feature hooks/components (typically **1–4 cohesive public entries**):
 
-- Read references/01-scope.md when a request arrives and you must decide how much process it needs.
-- Read references/01-scope.md, references/02-specify.md, references/03-criteria-and-validation.md and references/08-interfaces.md when you start gate 1, Specify.
-- Read references/02-specify.md when a new spec starts, the request is ambiguous, or terms need defining.
-- Read references/03-criteria-and-validation.md when you write or check acceptance criteria and how each is validated.
-- Read references/04-prompt-contract.md when the user wants a PROMPT.md or a benchmark-style brief.
-- Read references/05-plan-and-tasks.md when a frozen spec must become slices and task files.
-- Read references/06-increments.md when you implement a task, or make a wide change across many files.
-- Read references/07-testing.md when you write tests, change tests, or judge test quality.
-- Read references/08-interfaces.md when you define or change a public surface, or write Expected Interface entries.
-- Read references/09-context-and-resume.md when a session is long, is about to compact, or resumes earlier work.
-- Read references/10-subagents.md when you consider delegating, or have to run roles without delegation.
-- Read references/11-verification.md when work is done and you must prove it at gate 4.
-- Read references/12-review-panel.md when a spec or plan is large and needs independent review.
-- Read references/13-stack-and-env.md when you need the build, test, or run commands, or a stack choice.
-- Read references/14-pitfalls.md when something feels off, or before closing any gate.
-- Read references/15-benchmark-task-authoring.md only when the task is graded in Docker.
-- Read references/16-sources.md when the user asks where the ideas came from.
-- Read references/17-web-ui-builds.md when the deliverable is a browser UI, an SPA, or a clone of an existing product's interface.
-- Use templates/spec.md when you start the spec file.
-- Use templates/glossary.md when a term is resolved and the user approves a glossary file.
-- Use templates/decision-record.md when a decision passes all three tests and the user approves the file.
-- Use templates/task.md when you write a task file.
-- Use templates/state.md when you open STATE.md (Position, Approvals, Commands, Decisions, Open items) for a multi-session run.
-- Use templates/proofs.md when you write only the proofs table.
-- Use templates/verification.md when you start VERIFY.md at gate 4.
-- Use templates/review-report.md when you record a review panel result.
-- Use templates/prompt.md when you compile a PROMPT.md.
-- Use templates/interface-entry.md when you add one public name to an Expected Interface.
-- Use templates/rubric.md when a PROMPT.md carries a rubric.
+- **Mnemonic name & status** — clear, intention-revealing name matching stack conventions; in existing repos, tag each entry `[new]` or `[modified]` so signature changes are obvious.
+- **File path** — exact module where it will live, so the architecture is visible upfront.
+- **Inputs** — parameter/prop/request names and types/shapes.
+- **Output & errors** — return type/response shape and explicit failure behavior.
+- **Behavior** — 1–2 sentences of observable behavior (*what*, not *how*).
 
-## Subagent mode
+Add a 1-line **Milestone Demo** describing how the user will see it work.
 
-1. Detect whether the harness can delegate work to other agents. If it cannot, say so once and use the fallback.
-2. If it can, read references/10-subagents.md before the first fan-out. Waves hold at most 3 workers. Judge a worker by the files on disk, not by its summary.
-3. Fallback: run the same roles one after another, each in a fresh session that reads only the files it needs. Label every result produced this way DEGRADED, in the report and in the verdict line.
-4. Workers do not spawn workers.
+**STOP and wait for user approval** before writing code for the milestone. The user can cut extras, rename functions, or adjust paths while changes cost zero lines of code.
 
-## Interface rule
+### Step 3: Build with Vertical TDD
 
-- The Expected Interface section lists public names only, each with the behavior it must have. Private items are the agent's free design and are never listed.
-- Expected Interface is the specification. Tests target public names. Private code may be tested directly, but a test that imports a name outside Expected Interface gets a WARN from the coverage script, not an error.
-- Details: references/08-interfaces.md and references/04-prompt-contract.md.
+Read [references/testing.md](./references/testing.md) before writing tests. Implement the active milestone one behavior at a time:
 
-## Windows note
+1. Pick one public function and one concrete behavior from the active milestone.
+2. Write **one** failing test calling the **public function** (never private internals).
+3. Run the targeted test and verify it fails for the expected reason.
+4. Write the **minimum code** (plus any clean private helpers needed) to make the test pass.
+5. Refactor while green so the code stays plain, readable, and minimal.
+6. Repeat for the remaining purposeful behaviors of the milestone (typically **2–4 focused tests per public function**).
 
-Where `python3` is not available, run the scripts with `python` or `py -3`. Shell steps assume Git Bash. Keep LF line endings in repository files.
+Keep the project runnable and earlier milestone tests passing at every step. If a milestone requires updating or removing earlier behavior, cleanly update or delete the obsolete tests in the same edit and note why in the report.
 
-## Gotchas
+### Step 4: Milestone Demo & Steering Gate
 
-Each line has its check. Full table in references/14-pitfalls.md.
+When the active milestone's tests pass, run the relevant test suite (and build/typecheck if configured) plus the milestone demo command. Then **STOP** and report:
 
-1. A spec that grows past what one session can hold. Check: count criteria bullets; split above the limit in references/01-scope.md.
-2. Questions asked before earlier answers exist. Check: each round holds only questions with no open dependency.
-3. Criteria that cannot fail. Check: every criterion has a False if clause and fails at the base commit.
-4. Approval written by the agent. Check: the Approvals line in STATE.md quotes the user and carries an ISO date from a later turn.
-5. Tests that import names outside the public list. Check: run scripts/check_interface_coverage.py and read each WARN.
-6. Tasks sliced by layer. Check: each task has a Demo question a person answers by watching.
-7. Done claimed without evidence. Check: VERIFY.md has quoted output and passes scripts/validate_verification.py.
-8. A test edited to make it pass. Check: the diff shows no changed assertion without a finding.
-9. A layout criterion proven by a jsdom assertion. Check: jsdom computes no layout, so geometry, side-by-side panes, and theme contrast need a screenshot with the AC it proves named (references/17-web-ui-builds.md).
-10. A requirement that enumerates N items and a criterion that checks M < N. Check: count members in the requirement, count them in the criterion, compare before freezing (references/03-criteria-and-validation.md).
-11. A revision written to clear findings introduces new contradictions. Check: before re-panelling, list every requirement that names a state, view, count, key or verb, and confirm no two requirements and no criterion disagree about it (references/14-pitfalls.md).
-12. An action described as both a toggle and idempotent. Check: read each action's verb; a toggle restores on a repeat, only set-style actions are idempotent.
+1. **Demo & verification:** Exact command(s) run and quoted summary output (including test count and exit status).
+2. **Blast radius:** Exact files created/modified (e.g. `git diff --stat`) so the user immediately sees footprint.
+3. **Tests added & purpose:** One short line per test/group explaining what real regression it catches.
+4. **Deferred / Ideas:** Edge cases or enhancements intentionally *not* built.
+5. **Next step:** Ask whether to refine anything in Milestone `k` or move on to define the public contract for Milestone `k+1`.
+
+Never start the next milestone until the user reviews the current one and confirms direction.
+
+## Anti-Rationalization Guardrails
+
+| Temptation | Rule |
+|---|---|
+| "I'll define all milestones' public functions now to be thorough." | Future signatures drift once Milestone 1 runs. Contract only the active milestone. |
+| "I'll add an interface/adapter layer in case we swap backends later." | Speculative indirection hardens the codebase. Keep it direct until a second implementation exists. |
+| "I'll write all tests for the milestone first, then implement." | Horizontal test batches lock in imagined details. Use vertical TDD: one test, minimal code, repeat. |
+| "I'll make this helper public so I can unit-test it directly." | Inflates the public surface and couples tests to internals. Keep helpers private and test via the public function. |
+| "I'll also add caching / retries / i18n / extra config just to be safe." | Unrequested scope bloat. Log it as a 1-line bullet in `Deferred / Ideas` instead. |
+| "I'll add tests for every getter, constant, and trivial error case." | High maintenance, low signal. Keep tests few, behavioral, and tied to real caller risk. |
+
+## Reference Files (Load Only When Needed)
+
+- [references/architecture.md](./references/architecture.md) — Load in Step 1 **only** when the project has no architecture yet (choosing the simplest fitting pattern, folder layout, data shapes, and boundaries).
+- [references/testing.md](./references/testing.md) — Load in Step 3 for vertical TDD rules, keeping the public surface small, real dependencies over internal mocks, and clean test updates.
+- [references/plan-template.md](./references/plan-template.md) — Load when creating or updating `PLAN.md` for multi-milestone or multi-session work.
